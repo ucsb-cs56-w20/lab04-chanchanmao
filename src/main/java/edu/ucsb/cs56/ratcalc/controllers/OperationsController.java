@@ -115,7 +115,7 @@ public class OperationsController {
     @GetMapping("/multiply/results")
     public String getMultiplyResults(Model model, @Valid RatCalcForm ratCalcForm, BindingResult bindingResult) {
         logger.info("getMultiplyResults ratCalcForm=" + ratCalcForm);
-        ratCalcForm.setOp("-");
+        ratCalcForm.setOp("x");
 
         // TODO: Fill this in with appropriate code
         if (!bindingResult.hasErrors() && !checkDenominatorErrors(ratCalcForm)) {
@@ -129,6 +129,33 @@ public class OperationsController {
         
         model.addAttribute("ratCalcForm", ratCalcForm);
         return "operations/multiply";
+    }
+
+    @GetMapping("/divide")
+    public String getDivide(Model model) {
+        RatCalcForm ratCalcForm = new RatCalcForm();
+        ratCalcForm.setOp("x");
+        model.addAttribute("ratCalcForm", ratCalcForm);
+        return "operations/divide";
+    }
+
+    @GetMapping("/divide/results")
+    public String getDivideResults(Model model, @Valid RatCalcForm ratCalcForm, BindingResult bindingResult) {
+        logger.info("getDivideResults ratCalcForm=" + ratCalcForm);
+        ratCalcForm.setOp("/");
+
+        // TODO: Fill this in with appropriate code
+        if (!bindingResult.hasErrors() && !checkDenominatorErrors(ratCalcForm)) {
+            Rational r1 = new Rational(ratCalcForm.getNum1(), ratCalcForm.getDenom1());
+            Rational r2 = new Rational(ratCalcForm.getNum2(), ratCalcForm.getDenom2());
+            Rational result = Rational.quotient(r1, r2);
+            logger.info("r1=" + r1 + " r2=" + r2 + " result=" + result);
+            ratCalcForm.setNumResult(result.getNumerator());
+            ratCalcForm.setDenomResult(result.getDenominator());
+        }
+        
+        model.addAttribute("ratCalcForm", ratCalcForm);
+        return "operations/divide";
     }
 
 }
